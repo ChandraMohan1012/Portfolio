@@ -46,7 +46,7 @@ The system uses prompt engineering techniques to generate human-readable explana
       'Improved decision-making through AI-powered insights',
       'Automated reporting saved 10+ hours per week'
     ],
-    github: 'https://github.com/ChandraMohan1012/intelligent-trading-system',    video: '/videos/trading-system-demo.mp4',    duration: '6 months',
+    github: 'https://github.com/ChandraMohan1012/intelligent-trading-system',    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/trading-system-demo.mp4',    duration: '6 months',
     role: 'AI/ML Developer',
     year: '2024'
   },
@@ -91,7 +91,7 @@ SoilMate empowers farmers with scientific insights, helping them optimize crop y
       'Adopted by 500+ farmers in pilot program'
     ],
     github: 'https://github.com/ChandraMohan1012/SoilMate.git',
-    video: '/videos/soilmate-demo.mp4',
+    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/soilmate-demo.mp4',
     duration: '8 months',
     role: 'Lead Developer',
     year: '2023-2024'
@@ -139,7 +139,7 @@ Each user role has a customized dashboard with relevant features and tools, ensu
       'Reduced unemployment in agricultural sector'
     ],
     github: 'https://github.com/ChandraMohan1012/agroconnect',
-    video: '/videos/agroconnect-demo.mp4',
+    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/agroconnect-demo.mp4',
     duration: '10 months',
     role: 'Full Stack Mobile Developer',
     year: '2023'
@@ -189,7 +189,7 @@ Using Hive for local storage, the app ensures that billing operations continue u
       'Deployed in 50+ retail locations'
     ],
     github: 'https://github.com/ChandraMohan1012/Bill-Urai',
-    video: '/videos/bill-urai-demo.mp4',
+    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/bill-urai-demo.mp4',
     duration: '4 months',
     role: 'Mobile App Developer',
     year: '2024'
