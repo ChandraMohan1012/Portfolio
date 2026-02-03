@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Subtle starfield background effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1px 1px at 230px 80px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 300px 150px, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 370px 50px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 450px 180px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 520px 90px, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1px 1px at 600px 130px, rgba(255,255,255,0.35), transparent);
+  background-size: 650px 200px;
+  animation: twinkle 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ffffff, #9ca3af);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ffffff, #e5e7eb);
+}
+
+/* Selection colors */
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Smooth animations */
+* {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Glass effect utility - minimalist theme */
+.glass {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient text - minimalist */
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #9ca3af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle glow effect */
+.cosmic-glow {
+  box-shadow: 
+    0 0 20px rgba(255, 255, 255, 0.15),
+    0 0 40px rgba(255, 255, 255, 0.08),
+    0 0 60px rgba(255, 255, 255, 0.05);
+}
+
+/* Orb styles - minimalist */
+.planet {
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 50%);
+}
+
+.planet-purple {
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e5e7eb, #6b7280);
+  box-shadow: 
+    inset -20px -20px 40px rgba(0,0,0,0.5),
+    0 0 60px rgba(255, 255, 255, 0.3);
+}
+
+.planet-blue {
+  background: radial-gradient(circle at 30% 30%, #e5e7eb, #9ca3af, #4b5563);
+  box-shadow: 
+    inset -15px -15px 30px rgba(0,0,0,0.5),
+    0 0 40px rgba(229, 231, 235, 0.3);
+}
+
+.planet-orange {
+  background: radial-gradient(circle at 30% 30%, #d1d5db, #9ca3af, #6b7280);
+  box-shadow: 
+    inset -10px -10px 20px rgba(0,0,0,0.4),
+    0 0 30px rgba(156, 163, 175, 0.3);
+}
+
+/* Orbit rings */
+.orbit-ring {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+/* Floating animation */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(20px) rotate(-5deg); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 40px rgba(229, 231, 235, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(229, 231, 235, 0.2);
+  }
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Animation utility classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}
+
+.animate-typing {
+  animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+}
+
+/* Scroll reveal animation */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease-out;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text utilities for better email display */
+.text-break {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.email-container {
+  max-width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Responsive contact card */
+@media (max-width: 768px) {
+  .contact-card {
+    padding: 1rem;
+  }
+  
+  .contact-card .email-text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
