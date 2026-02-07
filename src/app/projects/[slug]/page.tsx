@@ -46,7 +46,9 @@ The system uses prompt engineering techniques to generate human-readable explana
       'Improved decision-making through AI-powered insights',
       'Automated reporting saved 10+ hours per week'
     ],
-    github: 'https://github.com/ChandraMohan1012/intelligent-trading-system',    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/trading-system-demo.mp4',    duration: '6 months',
+    github: 'https://github.com/ChandraMohan1012/intelligent-trading-system',
+    demo: 'https://drive.google.com/file/d/1y5Auuq8v_Nz560W-cnyEG0VW8yWoAUX8/view?usp=drivesdk',
+    duration: '6 months',
     role: 'AI/ML Developer',
     year: '2024'
   },
@@ -91,7 +93,7 @@ SoilMate empowers farmers with scientific insights, helping them optimize crop y
       'Adopted by 500+ farmers in pilot program'
     ],
     github: 'https://github.com/ChandraMohan1012/SoilMate.git',
-    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/soilmate-demo.mp4',
+    demo: 'https://drive.google.com/file/d/1i69eUD6ultUnJ_sHWS0Vw8MM66Jrr9Xc/view?usp=drivesdk',
     duration: '8 months',
     role: 'Lead Developer',
     year: '2023-2024'
@@ -139,7 +141,7 @@ Each user role has a customized dashboard with relevant features and tools, ensu
       'Reduced unemployment in agricultural sector'
     ],
     github: 'https://github.com/ChandraMohan1012/agroconnect',
-    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/agroconnect-demo.mp4',
+    demo: 'https://drive.google.com/file/d/1jrKpNiruHplQyNjBdcW3CtztKFcdfPdp/view?usp=drivesdk',
     duration: '10 months',
     role: 'Full Stack Mobile Developer',
     year: '2023'
@@ -189,7 +191,7 @@ Using Hive for local storage, the app ensures that billing operations continue u
       'Deployed in 50+ retail locations'
     ],
     github: 'https://github.com/ChandraMohan1012/Bill-Urai',
-    video: 'https://res.cloudinary.com/your-cloud-name/video/upload/v1707043200/bill-urai-demo.mp4',
+    demo: 'https://drive.google.com/file/d/1wfm9KKvzxlU9bVrnMkYxle1nJ_3EIksJ/view?usp=drivesdk',
     duration: '4 months',
     role: 'Mobile App Developer',
     year: '2024'
@@ -277,23 +279,21 @@ export default function ProjectDetail() {
           </p>
         </div>
 
-        {/* Video Section */}
-        {project.video && (
+        {/* Demo Section */}
+        {project.demo && (
           <div className={`mb-12 transition-all duration-700 delay-100 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-black">
-              <video
-                width="100%"
-                height="auto"
-                controls
-                className="w-full h-auto"
-                poster="/images/video-poster.jpg"
-              >
-                <source src={project.video} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-white/20 to-gray-300/20 backdrop-blur-xl border border-white/30 rounded-2xl hover:border-white/50 hover:from-white/30 hover:to-gray-300/30 transition-all duration-300 text-white font-semibold group"
+            >
+              <i className="fas fa-play text-lg group-hover:scale-110 transition-transform duration-300"></i>
+              <span>View Demo on Google Drive</span>
+              <i className="fas fa-external-link-alt text-sm group-hover:translate-x-1 transition-transform duration-300"></i>
+            </a>
           </div>
         )}
 

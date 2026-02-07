@@ -39,7 +39,8 @@ const Projects = () => {
       gradient: 'from-white to-gray-300',
       description: 'Python-based AI trading analysis using ML models and sentiment insights. Applied prompt engineering for signal explanation, decision reasoning, and automated reporting.',
       technologies: ['Python', 'Machine Learning', 'Sentiment Analysis', 'Prompt Engineering', 'AI Reporting'],
-      github: 'https://github.com/ChandraMohan1012/Intelligent-Trading-System'
+      github: 'https://github.com/ChandraMohan1012/Intelligent-Trading-System',
+      demo: 'https://drive.google.com/file/d/1y5Auuq8v_Nz560W-cnyEG0VW8yWoAUX8/view?usp=drivesdk'
     },
     {
       title: 'SoilMate: Smart Crop System',
@@ -49,7 +50,8 @@ const Projects = () => {
       gradient: 'from-gray-200 to-white',
       description: 'AI-based system for crop, fertilizer, and crop health recommendations using soil data. Implemented ANN, Random Forest, and CNN with explainable AI via Flask and CLI tools.',
       technologies: ['Python', 'ANN', 'Random Forest', 'CNN', 'Flask', 'Explainable AI'],
-      github: 'https://github.com/ChandraMohan1012/SoilMate.git'
+      github: 'https://github.com/ChandraMohan1012/SoilMate.git',
+      demo: 'https://drive.google.com/file/d/1i69eUD6ultUnJ_sHWS0Vw8MM66Jrr9Xc/view?usp=drivesdk'
     },
     {
       title: 'AgroConnect',
@@ -59,7 +61,8 @@ const Projects = () => {
       gradient: 'from-white to-gray-400',
       description: 'Multi-role Flutter app connecting farmers, workers, equipment holders, shop owners, and buyers. Role-based dashboards with weather updates, rentals, crop sales, hiring, and offline support.',
       technologies: ['Flutter', 'Dart', 'Hive', 'Weather API', 'Role-based Auth', 'Offline Storage'],
-      github: 'https://github.com/ChandraMohan1012/Agro_connect'
+      github: 'https://github.com/ChandraMohan1012/Agro_connect',
+      demo: 'https://drive.google.com/file/d/1jrKpNiruHplQyNjBdcW3CtztKFcdfPdp/view?usp=drivesdk'
     },
     {
       title: 'Bill-Urai',
@@ -69,7 +72,8 @@ const Projects = () => {
       gradient: 'from-gray-300 to-white',
       description: 'Flutter-based billing app with barcode scanning and real-time product total calculation. Hive-powered offline storage for billing data and app state persistence.',
       technologies: ['Flutter', 'Dart', 'Hive', 'Barcode Scanner', 'Offline Storage'],
-      github: 'https://github.com/ChandraMohan1012/Bill-Urai'
+      github: 'https://github.com/ChandraMohan1012/Bill-Urai',
+      demo: 'https://drive.google.com/file/d/1wfm9KKvzxlU9bVrnMkYxle1nJ_3EIksJ/view?usp=drivesdk'
     }
   ]
 
@@ -180,6 +184,18 @@ const Projects = () => {
                       <i className="fab fa-github"></i>
                       GitHub
                     </a>
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium"
+                      >
+                        <i className="fas fa-play"></i>
+                        Demo
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
