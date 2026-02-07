@@ -130,7 +130,7 @@ const Projects = () => {
                 onClick={() => router.push(`/projects/${project.slug}`)}
               >
                 {/* Header */}
-                <div className="p-6 bg-white/5">
+                <div className="p-6 bg-white/5 border-b border-white/10">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-4">
                       <div className={`w-14 h-14 bg-gradient-to-br ${project.gradient} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
