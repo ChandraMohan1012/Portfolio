@@ -120,7 +120,7 @@ const Contact = () => {
           }`} style={{ transitionDelay: '200ms' }}>
             <div className="relative group">
               {/* Glow */}
-              <div className="absolute -inset-1 sm:-inset-4 bg-gradient-to-r from-white/20 via-gray-300/20 to-white/20 rounded-3xl blur-3xl opacity-0 group-hover:opacity-50 transition-all duration-700"></div>
+              <div className="absolute hidden sm:block -inset-1 sm:-inset-4 bg-gradient-to-r from-white/20 via-gray-300/20 to-white/20 rounded-3xl blur-3xl opacity-0 group-hover:opacity-50 transition-all duration-700"></div>
               
               <div className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 overflow-hidden">
                 {/* Background orb */}
@@ -179,7 +179,7 @@ const Contact = () => {
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 {/* Card glow */}
-                <div className={`absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r ${info.gradient} rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-all duration-500`}></div>
+                <div className={`absolute hidden sm:block -inset-1 bg-gradient-to-r ${info.gradient} rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-all duration-500`}></div>
                 
                 <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center gap-5">
                   {/* Icon */}
