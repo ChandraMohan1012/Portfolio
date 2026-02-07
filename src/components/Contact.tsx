@@ -115,7 +115,7 @@ const Contact = () => {
         {/* Main content grid */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left side - CTA Card */}
-          <div className={`transition-all duration-700 ${
+          <div className={`transition-all duration-700 overflow-hidden ${
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
           }`} style={{ transitionDelay: '200ms' }}>
             <div className="relative group">
@@ -167,11 +167,11 @@ const Contact = () => {
           </div>
 
           {/* Right side - Contact cards */}
-          <div className="space-y-4">
+          <div className="space-y-4 overflow-hidden">
             {contactInfo.map((info, index) => (
               <div
                 key={index}
-                className={`group relative transition-all duration-500 ${
+                className={`group relative transition-all duration-500 overflow-hidden ${
                   isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
                 }`}
                 style={{ transitionDelay: `${(index + 2) * 150}ms` }}
