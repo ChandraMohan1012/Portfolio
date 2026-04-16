@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion, useMotionValue, useTransform } from 'framer-motion'
 
 /* ── System geometry ─────────────────────────────────────────────────────── */
 const SYSTEM_SIZE = 1000 
@@ -105,6 +106,12 @@ export default function Projects() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
+  /* Motion values for interactive drag rotation */
+  const dragX = useMotionValue(0)
+  const dragY = useMotionValue(0)
+  const rotateX = useTransform(dragY, [-200, 200], [45, 85]) // Tilt range
+  const rotateY = useTransform(dragX, [-200, 200], [-20, 20]) // Roll range
+
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.1 })
     if (sectionRef.current) io.observe(sectionRef.current)
@@ -206,25 +213,50 @@ export default function Projects() {
         }
       `}</style>
 
-      {/* Background stars */}
-      <div className="absolute inset-0 z-0">
-        {stars.map((s, i) => (
-          <div key={i} className="absolute bg-white rounded-full opacity-0 animate-pulse"
-            style={{ 
-              top: s.top, left: s.left, width: s.size, height: s.size,
-              animationDuration: `${s.dur}s`, animationDelay: `${s.delay}s`
-            }} />
-        ))}
-      </div>
+      {/* Background: deep space + NEBULAS ────────────────────────────── */}
+      {useMemo(() => (
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          {/* Nebula Clouds */}
+          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-900/10 blur-[150px] rounded-full" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-900/10 blur-[150px] rounded-full" />
+          <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-orange-900/5 blur-[120px] rounded-full" />
+
+          {stars.map((s, i) => (
+            <div key={i} className="absolute bg-white rounded-full opacity-60"
+              style={{ 
+                top: s.top, left: s.left, width: s.size, height: s.size,
+                animation: `twinkle ${s.dur}s ease-in-out infinite`,
+                animationDelay: `${s.delay}s`
+              }} />
+          ))}
+        </div>
+      ), [])}
 
       <div className={`text-center mb-16 relative z-10 transition-all duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
         <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">Project Galaxy</h2>
         <p className="text-gray-400 max-w-2xl mx-auto">Explore my missions orbiting the core knowledge center. Tilted in 3D perspective for full immersion.</p>
       </div>
 
-      <div className="system-container relative flex items-center justify-center pointer-events-none" 
-        style={{ height: SYSTEM_SIZE * 0.65 * scale, animation: visible ? 'float 6s ease-in-out infinite' : 'none' }}>
-        <div className="orbit-plane relative pointer-events-auto" style={{ width: SYSTEM_SIZE, height: SYSTEM_SIZE, transform: `scale(${scale}) rotateX(65deg)` }}>
+      <div className="system-container relative flex items-center justify-center" 
+        style={{ height: SYSTEM_SIZE * 0.7 * scale }}>
+        
+        {/* DRAGGABLE AREA */}
+        <motion.div 
+          drag
+          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+          dragElastic={0.1}
+          style={{ x: dragX, y: dragY, cursor: 'grab' }}
+          className="active:cursor-grabbing"
+        >
+          <motion.div 
+            className="orbit-plane relative" 
+            style={{ 
+              width: SYSTEM_SIZE, height: SYSTEM_SIZE, 
+              scale,
+              rotateX, 
+              rotateY,
+              transformStyle: 'preserve-3d'
+            }}>
           
           {/* ORBIT LINES + REVOLVING PULSES */}
           {CONFIG.map((c, i) => (
