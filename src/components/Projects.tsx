@@ -271,7 +271,7 @@ export default function Projects() {
           position: 'absolute', top: 0, left: 0,
         }}>
 
-          {/* ── Orbit rings — solid white lines (like the reference image) ── */}
+          {/* ── Orbit rings — clearly visible white ellipses like reference image ── */}
           {CONFIG.map((c, i) => (
             <div key={i}
               className="absolute top-1/2 left-1/2 rounded-full pointer-events-none
@@ -280,12 +280,12 @@ export default function Projects() {
                 width:  c.orbit * 2,
                 height: c.orbit * 2,
                 transform: 'translate(-50%,-50%)',
-                border:  selected === i
-                  ? `1.5px solid rgba(255,255,255,0.45)`
-                  : `1px solid rgba(255,255,255,0.14)`,
+                border: selected === i
+                  ? '2px solid rgba(255,255,255,0.80)'
+                  : '1.5px solid rgba(255,255,255,0.38)',
                 boxShadow: selected === i
-                  ? `0 0 18px rgba(255,255,255,0.14), inset 0 0 18px rgba(255,255,255,0.05)`
-                  : 'none',
+                  ? '0 0 22px rgba(255,255,255,0.22), inset 0 0 22px rgba(255,255,255,0.06)'
+                  : '0 0 6px rgba(255,255,255,0.06)',
               }}
             />
           ))}
