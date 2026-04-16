@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -74,6 +74,39 @@ const Projects = () => {
       technologies: ['Flutter', 'Dart', 'Hive', 'Barcode Scanner', 'Offline Storage'],
       github: 'https://github.com/ChandraMohan1012/Bill-Urai',
       demo: 'https://drive.google.com/file/d/1wfm9KKvzxlU9bVrnMkYxle1nJ_3EIksJ/view?usp=drivesdk'
+    },
+    {
+      title: 'Virundhu',
+      slug: 'virundhu',
+      icon: 'fas fa-utensils',
+      status: 'Completed',
+      gradient: 'from-orange-300 to-red-200',
+      description: 'Flutter-based food ordering & social dining app with Lottie animations, Supabase backend integration, and image upload. Designed for a premium restaurant experience with real-time order management.',
+      technologies: ['Flutter', 'Dart', 'Supabase', 'Lottie', 'image_picker', 'Font Awesome'],
+      github: 'https://github.com/ChandraMohan1012/Virundhu',
+      demo: null
+    },
+    {
+      title: 'Exports Portfolio',
+      slug: 'exports-portfolio',
+      icon: 'fas fa-globe',
+      status: 'Live',
+      gradient: 'from-blue-300 to-cyan-200',
+      description: 'Professional business exports portfolio website built with pure HTML/CSS. Showcases product listings, IEC/GST details, WhatsApp inquiry integration, and multi-page navigation. Deployed live on Vercel.',
+      technologies: ['HTML', 'CSS', 'JavaScript', 'Vercel', 'WhatsApp API'],
+      github: 'https://github.com/ChandraMohan1012/exports-portfolio',
+      demo: 'https://exports-portfolio.vercel.app'
+    },
+    {
+      title: 'Suzhi — CPI Tracker',
+      slug: 'suzhi-cpi-tracker',
+      icon: 'fas fa-chart-bar',
+      status: 'Completed',
+      gradient: 'from-indigo-300 to-blue-200',
+      description: 'Flutter app for tracking Consumer Price Index (CPI) data with Supabase backend. Features data sharing, native splash screen, provider-based state management, and offline path storage.',
+      technologies: ['Flutter', 'Dart', 'Supabase', 'Provider', 'share_plus', 'intl'],
+      github: 'https://github.com/ChandraMohan1012/CPI',
+      demo: null
     }
   ]
 
