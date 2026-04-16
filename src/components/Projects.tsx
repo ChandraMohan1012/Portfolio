@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 
 /* ── System geometry ─────────────────────────────────────────────────────── */
@@ -124,7 +124,6 @@ const PROJECTS = [
 export default function Projects() {
   const [visible,  setVisible]  = useState(false)
   const [selected, setSelected] = useState(0)
-  const [hovered,  setHovered]  = useState<number | null>(null)
   const [paused,   setPaused]   = useState(false)
   const [scale,    setScale]    = useState(1)
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -157,7 +156,7 @@ export default function Projects() {
   return (
     <section id="projects" className="py-20 relative overflow-hidden" ref={sectionRef}>
 
-      {/* ── Keyframes ──────────────────────────────────────────────────────── */}
+      {/* ── Keyframes + GPU-accelerated orbit classes ──────────────────────── */}
       <style>{`
         @keyframes sol-cw    { to { transform: rotate( 360deg); } }
         @keyframes sol-ccw   { to { transform: rotate(-360deg); } }
@@ -192,47 +191,96 @@ export default function Projects() {
           0%,100% { opacity:.7; }
           50%      { opacity:.1; }
         }
-        /* Hide scrollbar on .no-sb */
+
+        /* ── GPU compositor layers: eliminates jank on orbit animation ── */
+        .sol-arm  {
+          will-change: transform;
+          transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+        .sol-body {
+          will-change: transform;
+          transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+
+        /* ── Pure-CSS hover — no React re-render on mouse move ── */
+        .p-area { cursor: pointer; }
+        .p-sphere {
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .p-area:hover .p-sphere {
+          transform: scale(1.13) !important;
+          box-shadow: 0 0 22px 6px var(--p-glow) !important;
+        }
+        .p-sphere.p-sel {
+          transform: scale(1.28) !important;
+          box-shadow: 0 0 38px 10px var(--p-glow) !important;
+        }
+        .p-glow-ring {
+          position: absolute; inset: 0; border-radius: 50%;
+          pointer-events: none;
+          transition: box-shadow 0.25s ease;
+        }
+        .p-area:hover .p-glow-ring {
+          box-shadow: 0 0 20px 4px var(--p-glow);
+        }
+        .p-glow-ring.p-sel {
+          box-shadow: 0 0 40px 10px var(--p-glow);
+        }
+        .p-label {
+          transition: color 0.25s, border-color 0.25s;
+          color: rgba(255,255,255,0.65);
+          border: 1px solid rgba(255,255,255,0.10);
+        }
+        .p-area:hover .p-label {
+          color: rgba(255,255,255,0.95);
+          border-color: rgba(255,255,255,0.30);
+        }
+        .p-label.p-sel {
+          color: #ffffff;
+          border-color: rgba(255,255,255,0.50);
+        }
+
         .no-sb { scrollbar-width:none; -ms-overflow-style:none; }
         .no-sb::-webkit-scrollbar { display:none; }
       `}</style>
 
-      {/* ── Background: deep space ──────────────────────────────────────────── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Milky-Way-like faint glow */}
-        <div className="absolute inset-0 opacity-[0.07]"
-          style={{ background: 'radial-gradient(ellipse 80% 50% at 55% 50%, rgba(100,120,200,1), transparent)' }} />
-        {/* Stars (deterministic positions) */}
-        {CONFIG.map((_, i) => {
-          const s = (i * 137.5 + 17) % 360
-          const s2 = (i * 97.3 + 43) % 360
-          return (
-            <div key={i} className="absolute rounded-full bg-white"
+      {/* ── Background: deep space (memoised — never re-renders) ────────────── */}
+      {useMemo(() => (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.07]"
+            style={{ background: 'radial-gradient(ellipse 80% 50% at 55% 50%, rgba(100,120,200,1), transparent)' }} />
+          {CONFIG.map((_, i) => {
+            const s  = (i * 137.5 + 17) % 360
+            const s2 = (i * 97.3  + 43) % 360
+            return (
+              <div key={i} className="absolute rounded-full bg-white"
+                style={{
+                  width:  i % 4 === 0 ? '2px' : '1.5px',
+                  height: i % 4 === 0 ? '2px' : '1.5px',
+                  top:  `${(s  * 0.73) % 100}%`,
+                  left: `${(s2 * 0.61) % 100}%`,
+                  animation: `twinkle ${2.5 + (i % 6) * 0.6}s ease-in-out infinite`,
+                  animationDelay: `${(i % 8) * 0.35}s`,
+                }}
+              />
+            )
+          })}
+          {[...Array(28)].map((_, i) => (
+            <div key={`s${i}`} className="absolute rounded-full bg-white"
               style={{
-                width: i % 4 === 0 ? '2px' : '1.5px',
-                height: i % 4 === 0 ? '2px' : '1.5px',
-                top: `${(s * 0.73) % 100}%`,
-                left: `${(s2 * 0.61) % 100}%`,
-                animation: `twinkle ${2.5 + (i % 6) * 0.6}s ease-in-out infinite`,
-                animationDelay: `${(i % 8) * 0.35}s`,
+                width: '1px', height: '1px',
+                top:  `${(i * 83.7) % 100}%`,
+                left: `${(i * 61.3 + 13) % 100}%`,
+                animation: `twinkle ${3 + (i % 5) * 0.7}s ease-in-out infinite`,
+                animationDelay: `${(i % 9) * 0.3}s`,
+                opacity: 0.5,
               }}
             />
-          )
-        })}
-        {/* Extra stars */}
-        {[...Array(28)].map((_, i) => (
-          <div key={`s${i}`} className="absolute rounded-full bg-white"
-            style={{
-              width: '1px', height: '1px',
-              top: `${(i * 83.7) % 100}%`,
-              left: `${(i * 61.3 + 13) % 100}%`,
-              animation: `twinkle ${3 + (i % 5) * 0.7}s ease-in-out infinite`,
-              animationDelay: `${(i % 9) * 0.3}s`,
-              opacity: 0.5,
-            }}
-          />
-        ))}
-      </div>
+          ))}
+        </div>
+      ), [])}
 
       {/* ── Section header ──────────────────────────────────────────────────── */}
       <div className={`text-center mb-10 px-4 transition-all duration-700
@@ -339,15 +387,16 @@ export default function Projects() {
 
           {/* ── PLANETS ─────────────────────────────────────────────────────── */}
           {PROJECTS.map((proj, i) => {
-            const c      = CONFIG[i]
-            const half   = c.size / 2
-            const isSel  = selected === i
-            const isHov  = hovered  === i
-            const delay  = -(c.start / 360) * c.speed
+            const c     = CONFIG[i]
+            const half  = c.size / 2
+            const isSel = selected === i
+            const delay = -(c.start / 360) * c.speed
 
             return (
               <div key={i}
-                /* Arm: zero-size square at canvas center, rotates */
+                /* Arm: zero-size square at canvas center, rotates.
+                   sol-arm class → will-change:transform + GPU layer */
+                className="sol-arm"
                 style={{
                   position: 'absolute', top: '50%', left: '50%',
                   width: 0, height: 0,
@@ -356,22 +405,28 @@ export default function Projects() {
                   animationPlayState: paused ? 'paused' : 'running',
                 }}
               >
-                {/* Body: offset by orbit, counter-rotates → stays upright */}
-                <div style={{
-                  position: 'absolute',
-                  left: c.orbit - half,
-                  top: -half,
-                  animation: `sol-ccw ${c.speed}s linear infinite`,
-                  animationDelay: `${delay}s`,
-                  animationPlayState: paused ? 'paused' : 'running',
-                }}>
-                  {/* ── Clickable planet area ─────────────────────────────── */}
+                {/* Body: offset by orbit, counter-rotates → stays upright.
+                    sol-body class → will-change:transform + GPU layer */}
+                <div
+                  className="sol-body"
+                  style={{
+                    position: 'absolute',
+                    left: c.orbit - half,
+                    top: -half,
+                    animation: `sol-ccw ${c.speed}s linear infinite`,
+                    animationDelay: `${delay}s`,
+                    animationPlayState: paused ? 'paused' : 'running',
+                  }}
+                >
+                  {/* ── Clickable planet area — hover handled by CSS, no React state ── */}
                   <div
-                    className="relative cursor-pointer select-none"
-                    style={{ width: c.size, height: c.size }}
+                    className="p-area relative select-none"
+                    style={{
+                      width: c.size, height: c.size,
+                      /* CSS custom property for per-planet glow colour */
+                      '--p-glow': proj.glow,
+                    } as React.CSSProperties}
                     onClick={() => setSelected(i)}
-                    onMouseEnter={() => setHovered(i)}
-                    onMouseLeave={() => setHovered(null)}
                   >
                     {/* Saturn ring — BEHIND planet (z:0) */}
                     {proj.hasRing && (
@@ -379,46 +434,36 @@ export default function Projects() {
                         position: 'absolute',
                         width: '215%', height: '34%',
                         left: '-57%', top: '33%',
-                        border: `4px solid rgba(200,170,100,0.45)`,
+                        border: '4px solid rgba(200,170,100,0.45)',
                         borderRadius: '50%',
-                        zIndex: 0,
-                        pointerEvents: 'none',
+                        zIndex: 0, pointerEvents: 'none',
                       }} />
                     )}
 
-                    {/* Selected-planet orbit ring (spinning) */}
+                    {/* Selected-planet spinning indicator ring */}
                     {isSel && (
                       <div style={{
                         position: 'absolute',
-                        width:  c.size + 22, height: c.size + 22,
+                        width: c.size + 22, height: c.size + 22,
                         top: -11, left: -11,
                         border: '1.5px solid rgba(255,255,255,0.50)',
                         borderRadius: '50%',
                         animation: 'ring-sel 3s linear infinite',
-                        zIndex: 5,
-                        pointerEvents: 'none',
+                        zIndex: 5, pointerEvents: 'none',
                       }} />
                     )}
 
-                    {/* Glow ring on hover/select */}
-                    <div style={{
-                      position: 'absolute', inset: 0, borderRadius: '50%',
-                      pointerEvents: 'none', transition: 'box-shadow 0.3s',
-                      boxShadow: isSel
-                        ? `0 0 40px 10px ${proj.glow}`
-                        : isHov ? `0 0 22px 5px ${proj.glow.replace('0.6','0.35').replace('0.65','0.38').replace('0.55','0.30').replace('0.60','0.33')}`
-                        : 'none',
-                    }} />
+                    {/* Glow ring — CSS class handles hover, inline handles selected */}
+                    <div className={`p-glow-ring${isSel ? ' p-sel' : ''}`} />
 
-                    {/* ── Planet body (z:1) ───────────────────────────────── */}
+                    {/* ── Planet body (z:1) — CSS class handles scale on hover ── */}
                     <div
-                      className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center"
+                      className={`p-sphere absolute inset-0 rounded-full overflow-hidden
+                                  flex items-center justify-center${isSel ? ' p-sel' : ''}`}
                       style={{
                         zIndex: 1,
                         background: proj.pBg,
-                        boxShadow: `${proj.pShadow}, 0 0 ${isSel ? 36 : 18}px ${proj.glow}`,
-                        transform: isSel ? 'scale(1.28)' : isHov ? 'scale(1.13)' : 'scale(1)',
-                        transition: 'transform 0.3s, box-shadow 0.3s',
+                        boxShadow: `${proj.pShadow}, 0 0 18px var(--p-glow)`,
                       }}
                     >
                       {/* Specular sheen (light source top-left) */}
@@ -468,34 +513,30 @@ export default function Projects() {
                       }} />
                     )}
 
-                    {/* ── Project name label — ALWAYS VISIBLE ──────────────── */}
-                    <div style={{
-                      position: 'absolute',
-                      top: c.size + 10,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      whiteSpace: 'nowrap',
-                      zIndex: 6,
-                      pointerEvents: 'none',
-                      /* Name pill */
-                      background: 'rgba(0,0,0,0.58)',
-                      border: isSel
-                        ? '1px solid rgba(255,255,255,0.35)'
-                        : '1px solid rgba(255,255,255,0.10)',
-                      borderRadius: '999px',
-                      padding: '3px 10px',
-                      color: isSel ? '#ffffff' : 'rgba(255,255,255,0.70)',
-                      fontSize: '11px',
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 600,
-                      letterSpacing: '0.03em',
-                      boxShadow: isSel ? `0 0 12px ${proj.glow}` : 'none',
-                      transition: 'color 0.3s, border-color 0.3s, box-shadow 0.3s',
-                    }}>
+                    {/* ── Project name label — ALWAYS VISIBLE, CSS-only hover ── */}
+                    <div
+                      className={`p-label${isSel ? ' p-sel' : ''}`}
+                      style={{
+                        position: 'absolute',
+                        top: c.size + 10,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        whiteSpace: 'nowrap',
+                        zIndex: 6,
+                        pointerEvents: 'none',
+                        background: 'rgba(0,0,0,0.60)',
+                        borderRadius: '999px',
+                        padding: '3px 10px',
+                        fontSize: '11px',
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontWeight: 600,
+                        letterSpacing: '0.03em',
+                      }}
+                    >
                       {proj.shortName}
                     </div>
 
-                    {/* Mission number (smaller, below the name) */}
+                    {/* Mission number */}
                     <div style={{
                       position: 'absolute',
                       top: c.size + 34,
@@ -504,7 +545,7 @@ export default function Projects() {
                       whiteSpace: 'nowrap',
                       zIndex: 6,
                       pointerEvents: 'none',
-                      color: 'rgba(255,255,255,0.35)',
+                      color: 'rgba(255,255,255,0.30)',
                       fontSize: '9px',
                       fontFamily: 'monospace',
                       letterSpacing: '0.12em',
