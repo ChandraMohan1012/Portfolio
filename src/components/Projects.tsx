@@ -510,7 +510,7 @@ export default function Projects() {
         {/* ── Warp Portal Modal Overlay ── */}
         <AnimatePresence>
           {selectedId && selectedProject && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto">
+            <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto">
               
               {/* Dim Backdrop Blur */}
               <motion.div 
