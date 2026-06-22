@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform, useVelocity, useSpring, useInView } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 /* ── Warp Speed Canvas Component ────────────────────────────────────────── */
 const WarpSpeedCanvas = () => {
@@ -358,166 +358,23 @@ The application features real-time cart synchronization, rich animated component
   }
 ]
 
-/* ── Individual Timeline Row Component ───────────────────────────────────── */
-const TimelineRow = ({
-  p,
-  idx,
-  springSkew,
-  setSelectedId
-}: {
-  p: Project
-  idx: number
-  springSkew: any
-  setSelectedId: (id: string) => void
-}) => {
-  const rowRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(rowRef, { once: false, amount: 0.25 })
-  const isEven = idx % 2 === 0
-
-  return (
-    <div 
-      ref={rowRef}
-      className="relative flex flex-col md:flex-row items-center justify-between mb-28 last:mb-0 w-full"
-    >
-      {/* 🟢 Interactive Timeline Node (Center on desktop, Left on mobile) */}
-      <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-10 h-10 flex items-center justify-center z-20">
-        <motion.div 
-          animate={{
-            scale: isInView ? 1.3 : 0.8,
-            backgroundColor: isInView ? '#ffffff' : 'rgba(255,255,255,0.05)',
-            borderColor: isInView ? p.color : 'rgba(255,255,255,0.2)'
-          }}
-          transition={{ duration: 0.4 }}
-          className="w-5 h-5 rounded-full border-2 bg-[#020617] shadow-lg cursor-pointer"
-          style={{ 
-            boxShadow: isInView ? `0 0 20px ${p.color}80, inset 0 0 8px ${p.color}` : 'none'
-          }}
-          onClick={() => setSelectedId(p.slug)}
-        />
-      </div>
-
-      {/* 🔴 Left Column (Card if Even, Date if Odd on Desktop; Hidden Empty block on Mobile) */}
-      <div className="w-full md:w-[45%] flex justify-end order-2 md:order-1 pl-14 md:pl-0">
-        {isEven ? (
-          <motion.div
-            style={{ rotateX: springSkew, transformStyle: 'preserve-3d' }}
-            initial={{ opacity: 0, x: -60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            onClick={() => setSelectedId(p.slug)}
-            className="w-full cursor-pointer group"
-          >
-            <div className="relative bg-white/5 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-white/5 overflow-hidden">
-              <div 
-                className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-5 group-hover:opacity-20 transition-all duration-500"
-                style={{ background: p.color }}
-              />
-
-              <div className="flex justify-between items-center mb-5">
-                <span className="text-xs font-mono tracking-widest text-gray-500 uppercase">{p.mission}</span>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 border border-white/10 text-white/60 group-hover:scale-110 group-hover:text-white transition-all duration-300">
-                  <i className={p.icon} />
-                </div>
-              </div>
-
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gray-300 transition-colors">
-                {p.title}
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                {p.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                {p.tech.slice(0, 3).map((t, i) => (
-                  <span key={i} className="px-2.5 py-1 bg-white/5 rounded-lg text-xs font-medium text-gray-400 border border-white/5">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ) : (
-          <div className="hidden md:flex flex-col items-end justify-center pr-10">
-            <span className="text-xs font-mono tracking-widest text-gray-600 uppercase mb-2">{p.mission}</span>
-            <span className="text-3xl font-display font-extrabold text-white/20 group-hover:text-white/40 transition-colors">{p.year}</span>
-          </div>
-        )}
-      </div>
-
-      {/* 🔵 Right Column (Date if Even, Card if Odd on Desktop; Card on Mobile) */}
-      <div className="w-full md:w-[45%] flex justify-start order-3 pl-14 md:pl-0">
-        {!isEven ? (
-          <motion.div
-            style={{ rotateX: springSkew, transformStyle: 'preserve-3d' }}
-            initial={{ opacity: 0, x: 60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            onClick={() => setSelectedId(p.slug)}
-            className="w-full cursor-pointer group"
-          >
-            <div className="relative bg-white/5 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-white/5 overflow-hidden">
-              <div 
-                className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-5 group-hover:opacity-20 transition-all duration-500"
-                style={{ background: p.color }}
-              />
-
-              <div className="flex justify-between items-center mb-5">
-                <span className="text-xs font-mono tracking-widest text-gray-500 uppercase">{p.mission}</span>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 border border-white/10 text-white/60 group-hover:scale-110 group-hover:text-white transition-all duration-300">
-                  <i className={p.icon} />
-                </div>
-              </div>
-
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gray-300 transition-colors">
-                {p.title}
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                {p.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                {p.tech.slice(0, 3).map((t, i) => (
-                  <span key={i} className="px-2.5 py-1 bg-white/5 rounded-lg text-xs font-medium text-gray-400 border border-white/5">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ) : (
-          <div className="hidden md:flex flex-col items-start justify-center pl-10">
-            <span className="text-xs font-mono tracking-widest text-gray-600 uppercase mb-2">{p.mission}</span>
-            <span className="text-3xl font-display font-extrabold text-white/20 group-hover:text-white/40 transition-colors">{p.year}</span>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-/* ── Main Projects Component ─────────────────────────────────────────────── */
 export default function Projects() {
   const [filter, setFilter] = useState<'all' | 'ai' | 'mobile' | 'web'>('all')
+  const [activeIndex, setActiveIndex] = useState(0)
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
-  // 1. Scroll-driven timeline height progress
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start']
-  })
-  const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%'])
-  const springLineHeight = useSpring(lineHeight, { stiffness: 80, damping: 25 })
+  // Track window resizing for mobile state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
-  // 2. 3D Card skew velocity physics
-  const { scrollY } = useScroll()
-  const scrollVelocity = useVelocity(scrollY)
-  const cardSkew = useTransform(scrollVelocity, [-1500, 1500], [-6, 6])
-  const springSkew = useSpring(cardSkew, { stiffness: 150, damping: 25 })
-
-  // Starfield backdrop background animation data
+  // Background stars data
   const stars = useMemo(() => Array.from({ length: 45 }).map(() => ({
     x: Math.random() * 100,
     y: Math.random() * 100,
@@ -526,6 +383,7 @@ export default function Projects() {
   })), [])
 
   const filteredProjects = useMemo(() => {
+    setActiveIndex(0) // Reset active slide when changing filter
     if (filter === 'all') return PROJECTS
     return PROJECTS.filter((p) => p.category === filter)
   }, [filter])
@@ -534,13 +392,20 @@ export default function Projects() {
     return PROJECTS.find((p) => p.slug === selectedId) || null
   }, [selectedId])
 
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev > 0 ? prev - 1 : filteredProjects.length - 1))
+  }
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev < filteredProjects.length - 1 ? prev + 1 : 0))
+  }
+
   return (
     <section 
       id="projects" 
-      ref={containerRef}
-      className="min-h-screen py-32 relative overflow-hidden bg-[#020617] perspective-[1000px]"
+      className="min-h-screen py-32 relative overflow-hidden bg-[#020617] flex flex-col justify-center"
     >
-      {/* 🌌 Background Atmosphere */}
+      {/* 🌌 Cosmic Background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full" />
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/5 blur-[150px] rounded-full" />
@@ -556,26 +421,26 @@ export default function Projects() {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm font-medium mb-6">
-            <i className="fas fa-route text-white"></i>
-            <span className="text-gray-300">Kinetic Timeline</span>
+            <i className="fas fa-layer-group text-white"></i>
+            <span className="text-gray-300">Space Deck Carousel</span>
           </span>
           <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
             Project <span className="text-gray-400">Galaxy</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Scroll down to track the timeline. Hover to light up connections and click to enter warp speed.
+            Swipe or slide through the 3D projection grid, and select a card to activate warp speed case studies.
           </p>
         </div>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-24">
+        <div className="flex flex-wrap justify-center gap-3 mb-16">
           {[
-            { id: 'all', label: 'All Missions', icon: 'fas fa-border-all' },
+            { id: 'all', label: 'All Projects', icon: 'fas fa-border-all' },
             { id: 'ai', label: 'AI & Python', icon: 'fas fa-brain' },
             { id: 'mobile', label: 'Mobile (Flutter)', icon: 'fas fa-mobile-alt' },
             { id: 'web', label: 'Web & Others', icon: 'fas fa-globe' }
@@ -595,29 +460,131 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* ── Timeline Container ── */}
-        <div className="relative max-w-5xl mx-auto">
+        {/* ── 3D Cover Flow Slider Container ── */}
+        <div className="relative w-full h-[480px] flex items-center justify-center overflow-hidden py-10 perspective-[1000px]">
           
-          {/* Laser beam progress line (Desktop Center, Mobile Left) */}
-          <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-4 bottom-4 w-[2px] bg-white/5">
-            <motion.div 
-              style={{ height: springLineHeight }}
-              className="w-full bg-gradient-to-b from-white via-gray-300 to-white origin-top shadow-[0_0_12px_rgba(255,255,255,0.7)]"
-            />
+          <div className="relative w-full max-w-[340px] md:max-w-[420px] h-[380px] flex items-center justify-center transform-style-3d">
+            {filteredProjects.map((p, i) => {
+              const offset = i - activeIndex
+              const absOffset = Math.abs(offset)
+              
+              // Calculate 3D transformation values
+              const rotateYVal = offset === 0 ? 0 : offset > 0 ? -30 : 30
+              const zVal = offset === 0 ? 0 : -220
+              const scaleVal = offset === 0 ? 1 : 0.82
+              
+              // Hide side cards on mobile, stack beautifully on desktop
+              const opacityVal = offset === 0 ? 1 : (isMobile ? 0 : Math.max(0.6 - absOffset * 0.15, 0.15))
+              const xVal = offset === 0 ? 0 : (isMobile ? offset * 320 : offset * 260 + (offset > 0 ? 80 : -80))
+              const zIndexVal = 100 - absOffset
+
+              return (
+                <motion.div
+                  key={p.slug}
+                  layoutId={`card-${p.slug}`}
+                  style={{
+                    zIndex: zIndexVal,
+                    pointerEvents: offset === 0 ? 'auto' : 'none'
+                  }}
+                  animate={{
+                    x: xVal,
+                    scale: scaleVal,
+                    rotateY: rotateYVal,
+                    z: zVal,
+                    opacity: opacityVal
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 120,
+                    damping: 22
+                  }}
+                  onClick={() => offset !== 0 && setActiveIndex(i)}
+                  className="absolute w-full h-full bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-8 border border-white/10 flex flex-col justify-between shadow-2xl overflow-hidden cursor-pointer"
+                >
+                  {/* Neon Color Glow Orb */}
+                  <div 
+                    className="absolute -top-20 -right-20 w-44 h-44 rounded-full blur-3xl opacity-10"
+                    style={{ background: p.color }}
+                  />
+
+                  <div>
+                    {/* Card Header */}
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-xs font-mono tracking-widest text-gray-500 uppercase">{p.mission}</span>
+                      <div 
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white border"
+                        style={{ borderColor: `${p.color}40`, background: `${p.color}10` }}
+                      >
+                        <i className={p.icon} />
+                      </div>
+                    </div>
+
+                    {/* Project Info */}
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 line-clamp-1">{p.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">{p.description}</p>
+                  </div>
+
+                  {/* Card Bottom / Interactive Trigger */}
+                  <div>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {p.tech.slice(0, 3).map((t, idx) => (
+                        <span key={idx} className="px-2.5 py-1 bg-white/5 rounded-lg text-xs font-medium text-gray-400 border border-white/5">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {offset === 0 ? (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedId(p.slug)
+                        }}
+                        className="w-full py-3 bg-white text-black font-semibold rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5"
+                      >
+                        <span>Explore Case Study</span>
+                        <i className="fas fa-chevron-right text-xs" />
+                      </button>
+                    ) : (
+                      <div className="text-center text-xs text-gray-500 font-medium">Click to Center Slide</div>
+                    )}
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
 
-          {/* Staggered Rows */}
-          <div className="space-y-4">
-            {filteredProjects.map((p, idx) => (
-              <TimelineRow 
-                key={p.slug}
-                p={p}
-                idx={idx}
-                springSkew={springSkew}
-                setSelectedId={setSelectedId}
-              />
-            ))}
+          {/* 🏹 Left/Right Navigation Arrows */}
+          <div className="absolute inset-x-0 bottom-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex justify-between px-4 sm:px-12 pointer-events-none">
+            <button
+              onClick={handlePrev}
+              className="w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white/10 hover:border-white/20 active:scale-95 transition-all pointer-events-auto shadow-lg backdrop-blur-md"
+              aria-label="Previous Project"
+            >
+              <i className="fas fa-chevron-left" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white/10 hover:border-white/20 active:scale-95 transition-all pointer-events-auto shadow-lg backdrop-blur-md"
+              aria-label="Next Project"
+            >
+              <i className="fas fa-chevron-right" />
+            </button>
           </div>
+        </div>
+
+        {/* 🟢 Navigation Indicator Dots */}
+        <div className="flex justify-center gap-2 mt-8">
+          {filteredProjects.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveIndex(idx)}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                activeIndex === idx ? 'w-8 bg-white' : 'w-2.5 bg-white/20 hover:bg-white/40'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
 
         {/* ── Warp Portal Modal Overlay ── */}
@@ -658,7 +625,6 @@ export default function Projects() {
                     background: `linear-gradient(135deg, rgba(2,6,23,0.95) 0%, rgba(15,23,42,0.95) 100%)`
                   }}
                 >
-                  {/* Decorative orbital glowing background element */}
                   <div className="absolute inset-0 z-0 flex items-center justify-center">
                     <div 
                       className="w-56 h-56 rounded-full opacity-20 blur-3xl animate-pulse"
@@ -673,7 +639,6 @@ export default function Projects() {
                       {selectedProject.mission}
                     </span>
                     
-                    {/* Floating Planet Globe */}
                     <div className="w-24 h-24 rounded-full mx-auto my-8 relative flex items-center justify-center animate-bounce shadow-xl"
                       style={{ 
                         background: selectedProject.pBg,
@@ -692,7 +657,6 @@ export default function Projects() {
                     </p>
                   </div>
 
-                  {/* Metadata fields */}
                   <div className="relative z-10 mt-8 space-y-3 pt-6 border-t border-white/10">
                     <div className="flex justify-between text-xs">
                       <span className="text-gray-500">YEAR</span>
@@ -713,7 +677,6 @@ export default function Projects() {
                 <div className="w-full md:w-3/5 p-8 overflow-y-auto max-h-[50vh] md:max-h-[80vh] custom-scrollbar">
                   <div className="space-y-8">
                     
-                    {/* Project Overview */}
                     <div>
                       <h4 className="text-xs font-mono tracking-widest text-gray-500 uppercase mb-3">Project Overview</h4>
                       <p className="text-gray-300 text-base leading-relaxed whitespace-pre-line">
@@ -721,7 +684,6 @@ export default function Projects() {
                       </p>
                     </div>
 
-                    {/* Technologies Used */}
                     <div>
                       <h4 className="text-xs font-mono tracking-widest text-gray-500 uppercase mb-4">Technologies Used</h4>
                       <div className="flex flex-wrap gap-2">
@@ -736,7 +698,6 @@ export default function Projects() {
                       </div>
                     </div>
 
-                    {/* Features list */}
                     <div>
                       <h4 className="text-xs font-mono tracking-widest text-gray-500 uppercase mb-4">Key Features</h4>
                       <div className="grid sm:grid-cols-2 gap-3">
@@ -749,7 +710,6 @@ export default function Projects() {
                       </div>
                     </div>
 
-                    {/* Technical Challenges */}
                     <div>
                       <h4 className="text-xs font-mono tracking-widest text-gray-500 uppercase mb-4">Technical Challenges</h4>
                       <div className="space-y-3">
@@ -762,7 +722,6 @@ export default function Projects() {
                       </div>
                     </div>
 
-                    {/* Outcomes */}
                     <div>
                       <h4 className="text-xs font-mono tracking-widest text-gray-500 uppercase mb-4">Outcomes & Impact</h4>
                       <div className="space-y-3">
@@ -775,7 +734,6 @@ export default function Projects() {
                       </div>
                     </div>
 
-                    {/* Call to Actions / Links */}
                     <div className="pt-6 border-t border-white/10 flex flex-wrap gap-4">
                       <a 
                         href={selectedProject.github} 
