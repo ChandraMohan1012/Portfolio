@@ -484,7 +484,7 @@ export default function Projects() {
                   layoutId={`card-${p.slug}`}
                   style={{
                     zIndex: zIndexVal,
-                    pointerEvents: offset === 0 ? 'auto' : 'none'
+                    pointerEvents: 'auto'
                   }}
                   animate={{
                     x: xVal,
