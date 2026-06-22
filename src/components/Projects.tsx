@@ -463,7 +463,19 @@ export default function Projects() {
         {/* ── 3D Cover Flow Slider Container ── */}
         <div className="relative w-full h-[480px] flex items-center justify-center overflow-hidden py-10 perspective-[1000px]">
           
-          <div className="relative w-full max-w-[340px] md:max-w-[420px] h-[380px] flex items-center justify-center transform-style-3d">
+          <motion.div 
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(e, { offset }) => {
+              if (offset.x < -50) {
+                handleNext();
+              } else if (offset.x > 50) {
+                handlePrev();
+              }
+            }}
+            className="relative w-full max-w-[340px] md:max-w-[420px] h-[380px] flex items-center justify-center transform-style-3d cursor-grab active:cursor-grabbing"
+          >
             {filteredProjects.map((p, i) => {
               const offset = i - activeIndex
               const absOffset = Math.abs(offset)
@@ -552,25 +564,7 @@ export default function Projects() {
                 </motion.div>
               )
             })}
-          </div>
-
-          {/* 🏹 Left/Right Navigation Arrows */}
-          <div className="absolute inset-x-0 bottom-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex justify-between px-4 sm:px-12 pointer-events-none">
-            <button
-              onClick={handlePrev}
-              className="w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white/10 hover:border-white/20 active:scale-95 transition-all pointer-events-auto shadow-lg backdrop-blur-md"
-              aria-label="Previous Project"
-            >
-              <i className="fas fa-chevron-left" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-white/10 hover:border-white/20 active:scale-95 transition-all pointer-events-auto shadow-lg backdrop-blur-md"
-              aria-label="Next Project"
-            >
-              <i className="fas fa-chevron-right" />
-            </button>
-          </div>
+          </motion.div>
         </div>
 
         {/* 🟢 Navigation Indicator Dots */}
