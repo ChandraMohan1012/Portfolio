@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform, useVelocity, useSpring, useInView } from 'framer-motion'
 
 /* ── Warp Speed Canvas Component ────────────────────────────────────────── */
 const WarpSpeedCanvas = () => {
@@ -31,7 +31,7 @@ const WarpSpeedCanvas = () => {
       color: `rgba(255, 255, 255, ${Math.random() * 0.4 + 0.6})`
     }))
 
-    const speed = 35 // Warp speed velocity
+    const speed = 35
 
     const animate = () => {
       ctx.fillStyle = 'rgba(2, 6, 23, 0.4)'
@@ -358,17 +358,171 @@ The application features real-time cart synchronization, rich animated component
   }
 ]
 
+/* ── Individual Timeline Row Component ───────────────────────────────────── */
+const TimelineRow = ({
+  p,
+  idx,
+  springSkew,
+  setSelectedId
+}: {
+  p: Project
+  idx: number
+  springSkew: any
+  setSelectedId: (id: string) => void
+}) => {
+  const rowRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(rowRef, { once: false, amount: 0.25 })
+  const isEven = idx % 2 === 0
+
+  return (
+    <div 
+      ref={rowRef}
+      className="relative flex flex-col md:flex-row items-center justify-between mb-28 last:mb-0 w-full"
+    >
+      {/* 🟢 Interactive Timeline Node (Center on desktop, Left on mobile) */}
+      <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-10 h-10 flex items-center justify-center z-20">
+        <motion.div 
+          animate={{
+            scale: isInView ? 1.3 : 0.8,
+            backgroundColor: isInView ? '#ffffff' : 'rgba(255,255,255,0.05)',
+            borderColor: isInView ? p.color : 'rgba(255,255,255,0.2)'
+          }}
+          transition={{ duration: 0.4 }}
+          className="w-5 h-5 rounded-full border-2 bg-[#020617] shadow-lg cursor-pointer"
+          style={{ 
+            boxShadow: isInView ? `0 0 20px ${p.color}80, inset 0 0 8px ${p.color}` : 'none'
+          }}
+          onClick={() => setSelectedId(p.slug)}
+        />
+      </div>
+
+      {/* 🔴 Left Column (Card if Even, Date if Odd on Desktop; Hidden Empty block on Mobile) */}
+      <div className="w-full md:w-[45%] flex justify-end order-2 md:order-1 pl-14 md:pl-0">
+        {isEven ? (
+          <motion.div
+            style={{ rotateX: springSkew, transformStyle: 'preserve-3d' }}
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            onClick={() => setSelectedId(p.slug)}
+            className="w-full cursor-pointer group"
+          >
+            <div className="relative bg-white/5 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-white/5 overflow-hidden">
+              <div 
+                className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-5 group-hover:opacity-20 transition-all duration-500"
+                style={{ background: p.color }}
+              />
+
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-xs font-mono tracking-widest text-gray-500 uppercase">{p.mission}</span>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 border border-white/10 text-white/60 group-hover:scale-110 group-hover:text-white transition-all duration-300">
+                  <i className={p.icon} />
+                </div>
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gray-300 transition-colors">
+                {p.title}
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                {p.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {p.tech.slice(0, 3).map((t, i) => (
+                  <span key={i} className="px-2.5 py-1 bg-white/5 rounded-lg text-xs font-medium text-gray-400 border border-white/5">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <div className="hidden md:flex flex-col items-end justify-center pr-10">
+            <span className="text-xs font-mono tracking-widest text-gray-600 uppercase mb-2">{p.mission}</span>
+            <span className="text-3xl font-display font-extrabold text-white/20 group-hover:text-white/40 transition-colors">{p.year}</span>
+          </div>
+        )}
+      </div>
+
+      {/* 🔵 Right Column (Date if Even, Card if Odd on Desktop; Card on Mobile) */}
+      <div className="w-full md:w-[45%] flex justify-start order-3 pl-14 md:pl-0">
+        {!isEven ? (
+          <motion.div
+            style={{ rotateX: springSkew, transformStyle: 'preserve-3d' }}
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            onClick={() => setSelectedId(p.slug)}
+            className="w-full cursor-pointer group"
+          >
+            <div className="relative bg-white/5 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-white/5 overflow-hidden">
+              <div 
+                className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-5 group-hover:opacity-20 transition-all duration-500"
+                style={{ background: p.color }}
+              />
+
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-xs font-mono tracking-widest text-gray-500 uppercase">{p.mission}</span>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 border border-white/10 text-white/60 group-hover:scale-110 group-hover:text-white transition-all duration-300">
+                  <i className={p.icon} />
+                </div>
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gray-300 transition-colors">
+                {p.title}
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                {p.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {p.tech.slice(0, 3).map((t, i) => (
+                  <span key={i} className="px-2.5 py-1 bg-white/5 rounded-lg text-xs font-medium text-gray-400 border border-white/5">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <div className="hidden md:flex flex-col items-start justify-center pl-10">
+            <span className="text-xs font-mono tracking-widest text-gray-600 uppercase mb-2">{p.mission}</span>
+            <span className="text-3xl font-display font-extrabold text-white/20 group-hover:text-white/40 transition-colors">{p.year}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ── Main Projects Component ─────────────────────────────────────────────── */
 export default function Projects() {
   const [filter, setFilter] = useState<'all' | 'ai' | 'mobile' | 'web'>('all')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
+  // 1. Scroll-driven timeline height progress
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start']
+  })
+  const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%'])
+  const springLineHeight = useSpring(lineHeight, { stiffness: 80, damping: 25 })
+
+  // 2. 3D Card skew velocity physics
+  const { scrollY } = useScroll()
+  const scrollVelocity = useVelocity(scrollY)
+  const cardSkew = useTransform(scrollVelocity, [-1500, 1500], [-6, 6])
+  const springSkew = useSpring(cardSkew, { stiffness: 150, damping: 25 })
+
   // Starfield backdrop background animation data
-  const stars = useMemo(() => Array.from({ length: 40 }).map(() => ({
+  const stars = useMemo(() => Array.from({ length: 45 }).map(() => ({
     x: Math.random() * 100,
     y: Math.random() * 100,
     s: Math.random() * 2 + 1,
-    o: Math.random() * 0.5 + 0.2
+    o: Math.random() * 0.4 + 0.2
   })), [])
 
   const filteredProjects = useMemo(() => {
@@ -384,7 +538,7 @@ export default function Projects() {
     <section 
       id="projects" 
       ref={containerRef}
-      className="min-h-screen py-32 relative overflow-hidden bg-[#020617]"
+      className="min-h-screen py-32 relative overflow-hidden bg-[#020617] perspective-[1000px]"
     >
       {/* 🌌 Background Atmosphere */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -407,21 +561,21 @@ export default function Projects() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm font-medium mb-6">
-            <i className="fas fa-rocket text-white"></i>
-            <span className="text-gray-300">Exploration Center</span>
+            <i className="fas fa-route text-white"></i>
+            <span className="text-gray-300">Kinetic Timeline</span>
           </span>
           <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
             Project <span className="text-gray-400">Galaxy</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Click on any mission card to activate warp speed and explore the detailed case study.
+            Scroll down to track the timeline. Hover to light up connections and click to enter warp speed.
           </p>
         </div>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16">
+        <div className="flex flex-wrap justify-center gap-3 mb-24">
           {[
-            { id: 'all', label: 'All Projects', icon: 'fas fa-border-all' },
+            { id: 'all', label: 'All Missions', icon: 'fas fa-border-all' },
             { id: 'ai', label: 'AI & Python', icon: 'fas fa-brain' },
             { id: 'mobile', label: 'Mobile (Flutter)', icon: 'fas fa-mobile-alt' },
             { id: 'web', label: 'Web & Others', icon: 'fas fa-globe' }
@@ -441,70 +595,32 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* Projects Grid */}
-        <motion.div 
-          layout
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((p) => (
-              <motion.div
+        {/* ── Timeline Container ── */}
+        <div className="relative max-w-5xl mx-auto">
+          
+          {/* Laser beam progress line (Desktop Center, Mobile Left) */}
+          <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-4 bottom-4 w-[2px] bg-white/5">
+            <motion.div 
+              style={{ height: springLineHeight }}
+              className="w-full bg-gradient-to-b from-white via-gray-300 to-white origin-top shadow-[0_0_12px_rgba(255,255,255,0.7)]"
+            />
+          </div>
+
+          {/* Staggered Rows */}
+          <div className="space-y-4">
+            {filteredProjects.map((p, idx) => (
+              <TimelineRow 
                 key={p.slug}
-                layoutId={`card-${p.slug}`}
-                onClick={() => setSelectedId(p.slug)}
-                className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 hover:border-white/20 transition-all duration-500 cursor-pointer overflow-hidden flex flex-col h-[350px] justify-between shadow-lg"
-                whileHover={{ y: -8 }}
-              >
-                {/* Visual planet glow helper */}
-                <div 
-                  className="absolute -top-16 -right-16 w-36 h-36 rounded-full blur-3xl opacity-10 group-hover:opacity-30 transition-all duration-500"
-                  style={{ background: p.color }}
-                />
-
-                <div>
-                  {/* Mission Code / Header */}
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="text-xs font-mono tracking-widest text-gray-500 uppercase">{p.mission}</span>
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 border border-white/10 text-white/70 group-hover:scale-110 group-hover:text-white transition-all duration-300">
-                      <i className={p.icon}></i>
-                    </div>
-                  </div>
-
-                  {/* Title & Short Description */}
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gray-200 transition-colors">
-                    {p.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
-                    {p.description}
-                  </p>
-                </div>
-
-                {/* Bottom tags & Call to Action */}
-                <div>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {p.tech.slice(0, 3).map((t, idx) => (
-                      <span key={idx} className="px-2.5 py-1 bg-white/5 rounded-lg text-xs font-medium text-gray-400 border border-white/5">
-                        {t}
-                      </span>
-                    ))}
-                    {p.tech.length > 3 && (
-                      <span className="px-2.5 py-1 bg-white/5 rounded-lg text-xs font-medium text-gray-500 border border-white/5">
-                        +{p.tech.length - 3}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <div className="flex items-center gap-2 text-sm font-semibold text-white/50 group-hover:text-white transition-colors duration-300">
-                    <span>Activate Mission</span>
-                    <i className="fas fa-chevron-right text-xs group-hover:translate-x-1 transition-transform"></i>
-                  </div>
-                </div>
-              </motion.div>
+                p={p}
+                idx={idx}
+                springSkew={springSkew}
+                setSelectedId={setSelectedId}
+              />
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </div>
+        </div>
 
-        {/* ── Warp Portal Modal Overlay ────────────────────────────────────── */}
+        {/* ── Warp Portal Modal Overlay ── */}
         <AnimatePresence>
           {selectedId && selectedProject && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto">
@@ -518,7 +634,7 @@ export default function Projects() {
                 className="absolute inset-0 bg-black/85 backdrop-blur-md z-0"
               />
 
-              {/* Warp Speed canvas stars animation background */}
+              {/* Warp Speed particles background */}
               <WarpSpeedCanvas />
 
               {/* Seamless Morph Container */}
@@ -552,7 +668,7 @@ export default function Projects() {
                     <div className="absolute w-[300px] h-[300px] border border-white/5 rounded-full animate-spin" style={{ animationDuration: '80s', animationDirection: 'reverse' }} />
                   </div>
 
-                  <div className="relative z-10">
+                  <div className="relative z-10 text-center md:text-left">
                     <span className="text-xs font-mono tracking-widest text-gray-500 uppercase block mb-4">
                       {selectedProject.mission}
                     </span>
