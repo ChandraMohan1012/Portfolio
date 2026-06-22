@@ -57,6 +57,7 @@ const PROJECTS: Project[] = [
       'Achieved a highly polished, distraction-free aesthetic'
     ],
     github: 'https://github.com/ChandraMohan1012/EYES',
+    demo: 'https://eyes-app-sigma.vercel.app',
     duration: '2 months',
     role: 'Full Stack AI Developer',
     year: '2024',
