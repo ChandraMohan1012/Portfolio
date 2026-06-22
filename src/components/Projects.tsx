@@ -29,6 +29,40 @@ interface Project {
 
 const PROJECTS: Project[] = [
   {
+    slug: 'eyes-ai-platform',
+    title: 'EYES AI Platform',
+    shortName: 'EYES',
+    mission: 'MISSION-08',
+    color: '#a855f7',
+    icon: 'fas fa-robot',
+    pBg: 'radial-gradient(circle at 30% 30%, #f3e8ff, #a855f7, #581c87)',
+    description: 'Production-ready AI chat platform and synthesis dashboard with Google/Slack integrations.',
+    fullDescription: `EYES is an advanced, production-grade AI platform featuring a borderless chat interface and a dedicated Synthesis Dashboard. The application is built to provide seamless conversational AI experiences.\n\nIt integrates deeply with Google Cloud (OAuth authentication) and Slack for robust user management and workflow automation. The UI is designed with a premium, minimalist aesthetic using modern web technologies like Next.js.`,
+    tech: ['Next.js', 'Vercel', 'Google OAuth', 'Slack API', 'AI Synthesis'],
+    features: [
+      'Borderless AI chat interface',
+      'Dashboard SynthesisView',
+      'Google Cloud OAuth authentication',
+      'Slack workspace integration',
+      'Optimized Open Graph social sharing'
+    ],
+    challenges: [
+      'Configuring complex OAuth flows across multiple providers',
+      'Designing a seamless, borderless conversational UI',
+      'Managing state across dashboard and chat interfaces'
+    ],
+    outcomes: [
+      'Successfully launched V1 for production',
+      'Integrated secure multi-platform authentication',
+      'Achieved a highly polished, distraction-free aesthetic'
+    ],
+    github: 'https://github.com/ChandraMohan1012/EYES',
+    duration: '2 months',
+    role: 'Full Stack AI Developer',
+    year: '2024',
+    category: 'ai'
+  },
+  {
     slug: 'intelligent-trading-system',
     title: 'Intelligent Trading System',
     shortName: 'Trading AI',
