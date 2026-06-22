@@ -3,80 +3,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-/* ── Warp Speed Canvas Component ────────────────────────────────────────── */
-const WarpSpeedCanvas = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    let animationFrameId: number
-    let width = (canvas.width = window.innerWidth)
-    let height = (canvas.height = window.innerHeight)
-
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth
-      height = canvas.height = window.innerHeight
-    }
-    window.addEventListener('resize', handleResize)
-
-    const numStars = 120
-    const stars = Array.from({ length: numStars }).map(() => ({
-      x: (Math.random() - 0.5) * width,
-      y: (Math.random() - 0.5) * height,
-      z: Math.random() * width,
-      color: `rgba(255, 255, 255, ${Math.random() * 0.4 + 0.6})`
-    }))
-
-    const speed = 35
-
-    const animate = () => {
-      ctx.fillStyle = 'rgba(2, 6, 23, 0.4)'
-      ctx.fillRect(0, 0, width, height)
-
-      stars.forEach((star) => {
-        star.z -= speed
-        if (star.z <= 0) {
-          star.z = width
-          star.x = (Math.random() - 0.5) * width
-          star.y = (Math.random() - 0.5) * height
-        }
-
-        const k = 128.0 / star.z
-        const px = star.x * k + width / 2
-        const py = star.y * k + height / 2
-
-        if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          const size = (1 - star.z / width) * 4
-          const lastK = 128.0 / (star.z + speed)
-          const lpx = star.x * lastK + width / 2
-          const lpy = star.y * lastK + height / 2
-
-          ctx.beginPath()
-          ctx.strokeStyle = star.color
-          ctx.lineWidth = size
-          ctx.moveTo(px, py)
-          ctx.lineTo(lpx, lpy)
-          ctx.stroke()
-        }
-      })
-
-      animationFrameId = requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      cancelAnimationFrame(animationFrameId)
-    }
-  }, [])
-
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
-}
 
 /* ── Project Case Studies Data ───────────────────────────────────────────── */
 interface Project {
@@ -595,8 +521,7 @@ export default function Projects() {
                 className="absolute inset-0 bg-black/85 backdrop-blur-md z-0"
               />
 
-              {/* Warp Speed particles background */}
-              <WarpSpeedCanvas />
+
 
               {/* Seamless Morph Container */}
               <motion.div
