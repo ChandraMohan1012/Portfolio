@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useRef, useState } from 'react'
 
@@ -89,10 +89,16 @@ const Education = () => {
                       </p>
                     </div>
                   </div>
-                  <span className="px-4 py-2 bg-white/10 border border-white/20 text-white font-medium rounded-full flex items-center gap-2 whitespace-nowrap">
-                    <i className="fas fa-calendar-alt"></i>
-                    2022 - 2026
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="px-4 py-2 bg-white/10 border border-white/20 text-white font-medium rounded-full flex items-center gap-2 whitespace-nowrap">
+                      <i className="fas fa-calendar-alt"></i>
+                      2022 - 2026
+                    </span>
+                    <span className="px-4 py-2 bg-white/5 border border-white/10 text-gray-300 font-medium rounded-full flex items-center gap-2 whitespace-nowrap text-sm">
+                      <i className="fas fa-star text-yellow-500"></i>
+                      CGPA: 8.11
+                    </span>
+                  </div>
                 </div>
               </div>
               

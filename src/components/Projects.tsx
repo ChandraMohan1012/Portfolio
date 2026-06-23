@@ -58,10 +58,42 @@ const PROJECTS: Project[] = [
     ],
     github: 'https://github.com/ChandraMohan1012/EYES',
     demo: 'https://eyes-app-sigma.vercel.app',
-    duration: '2 months',
-    role: 'Full Stack AI Developer',
-    year: '2024',
+    duration: '3 months',
+    role: 'Full Stack Developer / Lead Engineer',
+    year: '2026',
     category: 'ai'
+  },
+  {
+    slug: 'kanavu-illam',
+    title: 'Kanavu Illam',
+    shortName: 'Kanavu',
+    mission: 'MISSION-09',
+    color: '#10b981',
+    icon: 'fas fa-home',
+    pBg: 'radial-gradient(circle at 30% 30%, #d1fae5, #10b981, #047857)',
+    description: 'Intelligent Architectural Visualization & Reporting Platform.',
+    fullDescription: `Kanavu Illam is a cross-platform app that analyzes 2D floor plans using AI to generate Vastu compliance reports, structural analysis, and tiered cost estimations. It features a custom Three.js/WebGL engine that extrudes plans into interactive, rotatable 3D models directly inside Flutter.`,
+    tech: ['Flutter', 'Three.js', 'WebGL', 'AI', 'PDF Reporting'],
+    features: [
+      '2D floor plan AI analysis',
+      'Vastu compliance reporting',
+      'Interactive 3D model extrusion',
+      'Tiered cost estimation',
+      'Automated premium PDF generation'
+    ],
+    challenges: [
+      'Engineering a JS-to-Dart bridge for high-fidelity 3D canvas capture',
+      'Generating complex architectural blueprints accurately'
+    ],
+    outcomes: [
+      'Delivered comprehensive architectural reporting',
+      'Enabled immersive 3D visualizations on mobile'
+    ],
+    github: 'https://github.com/ChandraMohan1012',
+    duration: '3 months',
+    role: 'Full Stack / Mobile Developer',
+    year: '2026',
+    category: 'mobile'
   },
   {
     slug: 'intelligent-trading-system',
@@ -82,7 +114,8 @@ The system uses advanced prompt engineering techniques to generate human-readabl
       'News and social media sentiment analysis',
       'Automated signal explanation generation',
       'Risk assessment algorithms',
-      'Customizable trading strategies'
+      'Customizable trading strategies',
+      'IEEE Published: Real-Time AI-Driven Cross-Market Trading System'
     ],
     challenges: [
       'Processing large volumes of real-time data efficiently',
@@ -98,7 +131,7 @@ The system uses advanced prompt engineering techniques to generate human-readabl
     demo: 'https://drive.google.com/file/d/1y5Auuq8v_Nz560W-cnyEG0VW8yWoAUX8/view?usp=drivesdk',
     duration: '6 months',
     role: 'AI/ML Developer',
-    year: '2024',
+    year: '2025',
     category: 'ai'
   },
   {
@@ -133,9 +166,9 @@ The platform integrates advanced neural networks (ANN) for crop recommendation b
     ],
     github: 'https://github.com/ChandraMohan1012/SoilMate.git',
     demo: 'https://drive.google.com/file/d/1i69eUD6ultUnJ_sHWS0Vw8MM66Jrr9Xc/view?usp=drivesdk',
-    duration: '8 months',
+    duration: '3 months',
     role: 'Lead Developer',
-    year: '2023-2024',
+    year: '2025',
     category: 'ai'
   },
   {
@@ -171,9 +204,9 @@ Each user role has a customized dashboard with relevant features and tools, ensu
     ],
     github: 'https://github.com/ChandraMohan1012/Agro_connect',
     demo: 'https://drive.google.com/file/d/1jrKpNiruHplQyNjBdcW3CtztKFcdfPdp/view?usp=drivesdk',
-    duration: '10 months',
+    duration: '3 months',
     role: 'Full Stack Mobile Developer',
-    year: '2023',
+    year: '2025',
     category: 'mobile'
   },
   {

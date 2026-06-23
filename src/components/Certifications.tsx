@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useRef, useState } from 'react'
 
@@ -29,46 +29,32 @@ const Certifications = () => {
 
   const certifications = [
     {
-      title: 'Data Science Job Simulation',
-      provider: 'Forage',
-      description: 'Practical tasks in SQL, ML, and reporting',
-      icon: 'fas fa-database',
+      title: 'Test Engineer',
+      provider: 'Infosys Foundation / ICT Academy',
+      description: 'Completed employability training in QA practices and automation.',
+      icon: 'fas fa-vial',
       gradient: 'from-white to-gray-300'
     },
     {
-      title: 'Machine Learning Professional',
-      provider: 'Infosys Springboard',
-      description: 'Comprehensive ML fundamentals and applications',
-      icon: 'fas fa-brain',
+      title: 'Introduction to Internet of Things',
+      provider: 'NPTEL',
+      description: 'IoT fundamentals, sensor networks, and edge computing.',
+      icon: 'fas fa-network-wired',
       gradient: 'from-gray-200 to-white'
     },
     {
-      title: 'Natural Language Processing',
-      provider: 'Infosys Springboard',
-      description: 'Text processing and language models',
-      icon: 'fas fa-language',
+      title: 'Generative AI Landscape',
+      provider: 'Wingspan',
+      description: 'LLMs, prompt engineering, and AI application development.',
+      icon: 'fas fa-brain',
       gradient: 'from-white to-gray-400'
     },
     {
-      title: 'Python Programming',
-      provider: 'Infosys Springboard',
-      description: 'Advanced Python development skills',
-      icon: 'fab fa-python',
-      gradient: 'from-gray-300 to-white'
-    },
-    {
-      title: 'Deep Learning Specialization',
-      provider: 'Udemy',
-      description: 'Neural networks and deep learning',
-      icon: 'fas fa-network-wired',
-      gradient: 'from-white to-gray-200'
-    },
-    {
-      title: 'Advanced Programming',
+      title: 'Cloud Computing',
       provider: 'NPTEL',
-      description: 'Advanced programming concepts',
-      icon: 'fas fa-code',
-      gradient: 'from-gray-200 to-white'
+      description: 'Cloud service models (IaaS, PaaS, SaaS) and virtualization.',
+      icon: 'fas fa-cloud',
+      gradient: 'from-gray-300 to-white'
     }
   ]
 

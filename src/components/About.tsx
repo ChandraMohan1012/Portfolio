@@ -146,7 +146,7 @@ const About = () => {
                   <h3 className="text-lg font-semibold text-white">Experience</h3>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  Professional experience at <span className="text-white">ScableIndia Pvt. Ltd.</span> as a Software Developer and <span className="text-white">GU DataLogic</span> as a Generative AI Intern. Worked on AI-assisted development workflows, prompt optimization, and LLM accuracy improvements.
+                  Professional experience at <span className="text-white">Crescent Moon Consulting Services</span> and <span className="text-white">ScableIndia Pvt. Ltd.</span> as a Software Developer, and <span className="text-white">GU DataLogic</span> as a Generative AI Intern. Worked on AI-driven product development, building reporting pipelines, and AI-assisted workflows.
                 </p>
               </div>
             </div>
