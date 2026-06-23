@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 
@@ -114,7 +114,7 @@ const Hero = () => {
           <span className="border-r-2 border-white animate-pulse ml-1 inline-block h-7"></span>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+        <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
           <a
             href="#projects"
             className="group relative inline-flex items-center px-8 py-4 overflow-hidden rounded-full"
@@ -126,11 +126,21 @@ const Hero = () => {
             </span>
           </a>
           <a
+            href="/Chandru_Resume.pdf"
+            download="Chandru_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center px-8 py-4 border border-white/30 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-300 backdrop-blur-sm"
+          >
+            <i className="fas fa-file-pdf mr-2 group-hover:animate-bounce"></i>
+            Resume
+          </a>
+          <a
             href="#contact"
             className="group inline-flex items-center px-8 py-4 border border-white/30 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-300 backdrop-blur-sm"
           >
             <i className="fas fa-envelope mr-2 group-hover:animate-pulse"></i>
-            Get In Touch
+            Contact
           </a>
         </div>
       </div>
