@@ -722,16 +722,6 @@ export default function Projects() {
                     </div>
 
                     <div className="pt-6 border-t border-white/10 flex flex-wrap gap-4">
-                      <a 
-                        href={selectedProject.github} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="px-6 py-3.5 bg-white text-black font-semibold rounded-xl hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 shadow-lg"
-                      >
-                        <i className="fab fa-github text-lg" />
-                        <span>Explore Code</span>
-                      </a>
-                      
                       {selectedProject.demo && (
                         <a 
                           href={selectedProject.demo} 
